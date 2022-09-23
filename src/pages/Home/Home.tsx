@@ -1,22 +1,27 @@
 import { useEffect, useState } from "react";
 import { CustomButton, CustomContainer } from "../../components";
 import { StyleSheet, TouchableOpacity } from "react-native";
-import { useNavigation } from "@react-navigation/native";
+import { useIsFocused, useNavigation } from "@react-navigation/native";
 import { colors } from "../../styles";
 import { CustomList } from "./components/CustomList";
 import { FontAwesome5 } from "@expo/vector-icons";
 import { getItem } from "../../utils";
-import { getUser } from "../../services";
+import { getAllTasks, getUser } from "../../services";
 import { createUser } from "../../redux/states/user.state";
 import { useDispatch, useSelector } from "react-redux";
 import { AppStore } from "../../redux/store";
+import { TaskCreated } from "../../interfaces";
+import { GetTasksHook } from "./hooks/GetTasks.hook";
+import { Text } from "native-base";
 
 export interface HomeInterface {}
 
 const Home: React.FC<HomeInterface> = () => {
   const dispatch = useDispatch();
+  const isFocused = useIsFocused();
   const navigation: any = useNavigation();
   const userState = useSelector((store: AppStore) => store.user);
+  const [tasks, setTasks] = useState<TaskCreated[]>([]);
   const userProfile = async () => {
     let token = await getItem("token");
     !token ? navigation.navigate("SignIn") : navigation.navigate("Profile");
@@ -29,12 +34,23 @@ const Home: React.FC<HomeInterface> = () => {
         let user = await getUser();
         dispatch(createUser(user));
       }
+      if (token) {
+        let response = await GetTasksHook();
+        setTasks(response)
+      }
     };
-    userExist();
-  }, []);
+    if (isFocused) {
+      userExist();
+    }
+  }, [isFocused]);
   return (
     <CustomContainer>
-      <CustomList />
+      {/* <CustomList tasks={tasks}/> */}
+      {
+        tasks.map((task: TaskCreated) => {
+          return <Text key={task._id}>{task.name}</Text>
+        })
+      }
       <CustomButton
         placeholder="Add a task"
         onPress={() => navigation.navigate("Task")}
