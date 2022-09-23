@@ -3,11 +3,11 @@ import React, { useEffect, useState } from "react";
 import {
   Keyboard,
   StyleSheet,
-  Text,
   TouchableOpacity,
   View,
 } from "react-native";
-import { CustomButton, CustomContainer, CustomInput, CustomToast } from "../../components";
+import { CustomButton, CustomContainer, CustomInput } from "../../components";
+import { toast } from "../../components/CustomToast/event/toast.event";
 import { CreateTaskHook } from "./hooks/CreateTask.hook";
 
 export interface TaskInterface {}
@@ -15,7 +15,6 @@ export interface TaskInterface {}
 const Task: React.FC<TaskInterface> = () => {
   const navigation: any = useNavigation();
   const [view, setView] = useState(false);
-  const [active, setActive] = useState(false);
   const [task, setTask] = useState<{name: string, description: string}>({
     name: "",
     description: "",
@@ -30,9 +29,8 @@ const Task: React.FC<TaskInterface> = () => {
   const handleTaskCreation = async () => {
     let response = await CreateTaskHook(task);
     if (response.message === 'Task created') {
-      setActive(true);
+      toast.success({message: 'Task created', duration: 2000});
       setTimeout(() => {
-        setActive(false);
         navigation.goBack();
       }, 2000);
     }
@@ -84,7 +82,6 @@ const Task: React.FC<TaskInterface> = () => {
             buttonStyles={{ marginLeft: 10 }}
           />
         </View>
-        {active ? <CustomToast /> : null}
       </CustomContainer>
     </TouchableOpacity>
   );
