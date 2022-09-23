@@ -15,12 +15,13 @@ import Animated, {
 } from "react-native-reanimated";
 import { colors } from "../../../../styles";
 import { FontAwesome5 } from "@expo/vector-icons";
-import { Task } from "../../../../interfaces";
+import { TaskCreated } from "../../../../interfaces";
+import { DeleteTaskHook } from "./hooks/DeleteTask.hook";
 
 export interface ListItemInterface
   extends Pick<PanGestureHandlerProps, "simultaneousHandlers"> {
-  task: Task;
-  onDismiss?: (task: Task) => void;
+  task: TaskCreated;
+  onDismiss?: (task: TaskCreated) => void;
 }
 
 const LIST_ITEM_HEIGHT = 70;
@@ -42,7 +43,7 @@ const ListItem: React.FC<ListItemInterface> = ({
     onActive: (event) => {
       translateX.value = event.translationX;
     },
-    onEnd: () => {
+    onEnd: async () => {
       const shouldBeDismissed = translateX.value < TRANSLATE_X_THRESHOLD;
       if (shouldBeDismissed) {
         translateX.value = withTiming(-SCREEN_WIDTH);
@@ -53,6 +54,9 @@ const ListItem: React.FC<ListItemInterface> = ({
             runOnJS(onDismiss)(task);
           }
         });
+        console.log('ga')
+        let response = await DeleteTaskHook(task._id);
+        console.log(response);
       } else {
         translateX.value = withTiming(0);
       }

@@ -1,21 +1,24 @@
 import { ScrollView, View } from "native-base";
 import React, { useState } from "react";
 import { SafeAreaView, StyleSheet } from "react-native";
-import { Task } from "../../../../interfaces";
+import { TaskCreated } from "../../../../interfaces";
 import { fakedata } from "../../../../utils/fakedata";
 import { ListItem } from "../ListItem";
 
-export interface CustomListInterface {}
+export interface CustomListInterface {
+  tasks: TaskCreated[];
+}
 
-const CustomList: React.FC<CustomListInterface> = () => {
+const CustomList: React.FC<CustomListInterface> = ({ tasks }) => {
   const [list, setList] = useState(fakedata);
+
   return (
     <View style={{ flex: 1 }}>
       <SafeAreaView></SafeAreaView>
       <ScrollView style={{ flex: 1 }}>
         <View style={styles.taskContainer}>
-          {list.map((task: Task) => {
-            return <ListItem key={task.id} task={task} />;
+          {tasks.map((taskCreated: TaskCreated, index: number) => {
+            return <ListItem key={taskCreated._id} task={taskCreated} />;
           })}
         </View>
       </ScrollView>
