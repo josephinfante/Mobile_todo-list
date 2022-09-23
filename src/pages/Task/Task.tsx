@@ -7,9 +7,7 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import { CustomButton, CustomContainer, CustomToast } from "../../components";
-import { colors } from "../../styles";
-import { CustomInput } from "./CustomInput";
+import { CustomButton, CustomContainer, CustomInput, CustomToast } from "../../components";
 
 export interface TaskInterface {}
 
@@ -57,14 +55,12 @@ const Task: React.FC<TaskInterface> = () => {
           <CustomButton
             onPress={() => navigation.goBack()}
             placeholder="Cancel"
-            placeholderStyles={styles.placeholderStyles}
-            buttonStyles={[styles.buttonStyles, { marginRight: 10 }]}
+            buttonStyles={{ marginRight: 10 }}
           />
           <CustomButton
             onPress={() => add_task()}
             placeholder="Add task"
-            placeholderStyles={styles.placeholderStyles}
-            buttonStyles={[styles.buttonStyles, { marginLeft: 10 }]}
+            buttonStyles={{ marginLeft: 10 }}
           />
         </View>
         {active ? <CustomToast /> : null}
@@ -95,16 +91,5 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
-  },
-  buttonStyles: {
-    backgroundColor: colors.purpleLight,
-    borderRadius: 10,
-  },
-  placeholderStyles: {
-    fontSize: 15,
-    alignSelf: "center",
-    justifyContent: "center",
-    paddingHorizontal: 10,
-    paddingVertical: 5,
-  },
+  }
 });
