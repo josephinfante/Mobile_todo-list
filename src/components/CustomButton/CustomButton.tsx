@@ -1,19 +1,22 @@
-import {  View } from "native-base";
+import { Text, View } from "native-base";
 import React from "react";
-import { Text, TouchableOpacity } from "react-native";
+import { StyleSheet, TouchableOpacity } from "react-native";
+import { colors } from "../../styles";
 
 export interface CustomButtonInterface {
-	onPress: () => void
-	placeholder: string
-	containerStyles?: {}
-	buttonStyles?: {}
-	placeholderStyles?: {}
+  onPress: () => void;
+  placeholder: string;
+  containerStyles?: {};
+  buttonStyles?: {};
+  placeholderStyles?: {};
 }
 
-const CustomButton: React.FC<CustomButtonInterface> = (props : CustomButtonInterface) => {
+const CustomButton: React.FC<CustomButtonInterface> = (
+  props: CustomButtonInterface
+) => {
   return (
     <View style={props.containerStyles}>
-      <TouchableOpacity onPress={props.onPress} style={props.buttonStyles}>
+      <TouchableOpacity onPress={props.onPress} style={[styles.buttonStyles, props.buttonStyles]}>
         <Text style={props.placeholderStyles}>{props.placeholder}</Text>
       </TouchableOpacity>
     </View>
@@ -22,3 +25,11 @@ const CustomButton: React.FC<CustomButtonInterface> = (props : CustomButtonInter
 
 export default CustomButton;
 
+const styles = StyleSheet.create({
+  buttonStyles: {
+    backgroundColor: colors.purpleLight,
+    borderRadius: 50,
+    paddingVertical: 10,
+    paddingHorizontal: 20
+  },
+});
