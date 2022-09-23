@@ -8,6 +8,7 @@ import {
   View,
 } from "react-native";
 import { CustomButton, CustomContainer, CustomInput, CustomToast } from "../../components";
+import { CreateTaskHook } from "./hooks/CreateTask.hook";
 
 export interface TaskInterface {}
 
@@ -15,19 +16,27 @@ const Task: React.FC<TaskInterface> = () => {
   const navigation: any = useNavigation();
   const [view, setView] = useState(false);
   const [active, setActive] = useState(false);
-
-  const add_task = () => {
-    setActive(true);
-    setTimeout(() => {
-      setActive(false);
-    }, 2000);
-  };
+  const [task, setTask] = useState<{name: string, description: string}>({
+    name: "",
+    description: "",
+  });
 
   useEffect(() => {
     setTimeout(() => {
       setView(true);
     }, 200);
   }, []);
+
+  const handleTaskCreation = async () => {
+    let response = await CreateTaskHook(task);
+    if (response.message === 'Task created') {
+      setActive(true);
+      setTimeout(() => {
+        setActive(false);
+        navigation.goBack();
+      }, 2000);
+    }
+  }
   return (
     <TouchableOpacity
       onPress={() => Keyboard.dismiss()}
@@ -42,12 +51,24 @@ const Task: React.FC<TaskInterface> = () => {
               inputStyles={styles.titleStyles}
               placeholder="Write a title"
               delay={150}
+              onChangeText={(text: string) => {
+                setTask({
+                  ...task,
+                  name: text,
+                });
+              }}
             />
             <CustomInput
               containerStyles={styles.containerStyles}
               inputStyles={styles.descriptionStyles}
               placeholder="Write a description"
-              delay={200}
+              delay={150}
+              onChangeText={(text: string) => {
+                setTask({
+                  ...task,
+                  description: text,
+                });
+              }}
             />
           </>
         ) : null}
@@ -58,7 +79,7 @@ const Task: React.FC<TaskInterface> = () => {
             buttonStyles={{ marginRight: 10 }}
           />
           <CustomButton
-            onPress={() => add_task()}
+            onPress={() => handleTaskCreation()}
             placeholder="Add task"
             buttonStyles={{ marginLeft: 10 }}
           />
