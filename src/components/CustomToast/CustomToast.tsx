@@ -8,6 +8,7 @@ import {
   StyleSheet,
   ToastAndroid,
 } from "react-native";
+import { TouchableOpacity } from "react-native-gesture-handler";
 import Animated, {
   useAnimatedStyle,
   useSharedValue,
@@ -50,7 +51,7 @@ const CustomToast: React.FC<CustomToastInterface> = () => {
   };
   const closeToast = useCallback(() => {
     setMessage("");
-    setTimeOutDuration(timeOutDuration);
+    setTimeOutDuration(1000);
     animatedOpacity.value = withTiming(0);
     clearInterval(timeOutRef.current);
   }, [animatedOpacity]);
@@ -60,7 +61,7 @@ const CustomToast: React.FC<CustomToastInterface> = () => {
         if (timeOutDuration === 0) {
           closeToast();
         } else {
-          setTimeOutDuration(timeOutDuration - 1000);
+          setTimeOutDuration((prev) => prev - 500);
         }
       }, 500);
     }
@@ -85,59 +86,61 @@ const CustomToast: React.FC<CustomToastInterface> = () => {
   }
   return (
     <Animated.View style={[styles.toastContainer, animatedStyle]}>
-      <View>
-        <MotiView
-          from={{ opacity: 0, translateY: -50 }}
-          animate={{ opacity: 1, translateY: 0 }}
-          delay={100}
-          transition={{
-            type: "spring",
-          }}
-          exit={{
-            translateY: -50,
-          }}
-        >
-          <View
-            _light={{ bg: colors.secondaryLight }}
-            _dark={{ bg: colors.secondaryDark }}
-            style={{
-              borderRadius: 20,
+      <TouchableOpacity activeOpacity={1} onPress={closeToast}>
+        <View>
+          <MotiView
+            from={{ opacity: 0, translateY: -50 }}
+            animate={{ opacity: 1, translateY: 0 }}
+            delay={100}
+            transition={{
+              type: "spring",
+            }}
+            exit={{
+              translateY: -50,
             }}
           >
-            <SafeAreaView></SafeAreaView>
-            <View style={styles.container}>
-              <MotiView
-                from={{ opacity: 0, translateY: -50 }}
-                animate={{ opacity: 1, translateY: 0 }}
-                delay={150}
-                transition={{
-                  type: "spring",
-                }}
-                exit={{
-                  translateY: -50,
-                }}
-                style={[
-                  styles.statusBar,
-                  { backgroundColor: colors[messageType] },
-                ]}
-              ></MotiView>
-              <MotiView
-                from={{ opacity: 0, translateY: -50 }}
-                animate={{ opacity: 1, translateY: 0 }}
-                delay={170}
-                transition={{
-                  type: "spring",
-                }}
-                exit={{
-                  translateY: -50,
-                }}
-              >
-                <Text>{message}</Text>
-              </MotiView>
+            <View
+              _light={{ bg: colors.secondaryLight }}
+              _dark={{ bg: colors.secondaryDark }}
+              style={{
+                borderRadius: 20,
+              }}
+            >
+              <SafeAreaView></SafeAreaView>
+              <View style={styles.container}>
+                <MotiView
+                  from={{ opacity: 0, translateY: -50 }}
+                  animate={{ opacity: 1, translateY: 0 }}
+                  delay={150}
+                  transition={{
+                    type: "spring",
+                  }}
+                  exit={{
+                    translateY: -50,
+                  }}
+                  style={[
+                    styles.statusBar,
+                    { backgroundColor: colors[messageType] },
+                  ]}
+                ></MotiView>
+                <MotiView
+                  from={{ opacity: 0, translateY: -50 }}
+                  animate={{ opacity: 1, translateY: 0 }}
+                  delay={170}
+                  transition={{
+                    type: "spring",
+                  }}
+                  exit={{
+                    translateY: -50,
+                  }}
+                >
+                  <Text>{message}</Text>
+                </MotiView>
+              </View>
             </View>
-          </View>
-        </MotiView>
-      </View>
+          </MotiView>
+        </View>
+      </TouchableOpacity>
     </Animated.View>
   );
 };
@@ -152,6 +155,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     width: "90%",
     height: 70,
+    zIndex: 1
   },
   container: {
     marginHorizontal: 10,
