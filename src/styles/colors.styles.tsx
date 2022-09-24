@@ -5,7 +5,8 @@ export const colors = {
     secondaryLight: '#FFFFFF',
     purpleLight: '#B3B7EE',
     purpleDark: '#A2A3BB',
-    warning: '#FCFC62',
+    yellow: '#FCFC62',
+    warning: '#FF9F1C',
     error: '#B3001B',
     success: '#08AC4A',
     link: '#03A5DB'
