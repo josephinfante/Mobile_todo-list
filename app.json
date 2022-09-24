@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "todo-list",
+    "name": "TodoList App",
     "slug": "todo-list",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -17,6 +17,8 @@
       "**/*"
     ],
     "ios": {
+      "bundleIdentifier": "dev.josepinfante.todolist",
+      "buildNumber": "1.0.0",
       "supportsTablet": true
     },
     "android": {
@@ -24,7 +26,8 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
       },
-      "package": "com.todolist.app"
+      "package": "dev.josepinfante.todolist",
+      "versionCode": 1
     },
     "web": {
       "favicon": "./assets/favicon.png"
