@@ -2,7 +2,7 @@ import { User } from "../../interfaces";
 import { createSlice } from "@reduxjs/toolkit";
 
 export const UserEmptyState: User = {
-    id: "",
+    _id: "",
     name: "",
     lastname: "",
     email: "",
