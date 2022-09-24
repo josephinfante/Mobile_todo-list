@@ -1,9 +1,11 @@
 import axios from "axios";
 import { Login } from "../../../../interfaces";
-import { API_URL } from "@env"
 import { setItem } from "../../../../utils";
 import { getUser } from "../../../../services";
 import { toast } from "../../../../components/CustomToast/event/toast.event";
+import Constants from 'expo-constants';
+
+const API_URL = Constants.manifest?.extra?.API_URL || "http://localhost:3000";
 
 export const SignInHook = async (login: Login) => {
     if (login.email === "") { toast.error({message: "Please fill the email field", duration: 3000}); return }
