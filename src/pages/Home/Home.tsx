@@ -3,7 +3,6 @@ import { CustomButton, CustomContainer } from "../../components";
 import { StyleSheet, TouchableOpacity } from "react-native";
 import { useIsFocused, useNavigation } from "@react-navigation/native";
 import { colors } from "../../styles";
-import { CustomList } from "./components/CustomList";
 import { FontAwesome5 } from "@expo/vector-icons";
 import { getItem } from "../../utils";
 import { getUser } from "../../services";
@@ -13,6 +12,7 @@ import { AppStore } from "../../redux/store";
 import { TaskCreated } from "../../interfaces";
 import { GetTasksHook } from "./hooks/GetTasks.hook";
 import { Text } from "native-base";
+import { List } from "./components/List";
 
 export interface HomeInterface {}
 
@@ -48,12 +48,8 @@ const Home: React.FC<HomeInterface> = () => {
   }, [isFocused]);
   return (
     <CustomContainer>
-      {/* <CustomList tasks={tasks}/> */}
-      {tasks.map((task: TaskCreated) => {
-        return <Text key={task._id}>{task.name}</Text>;
-      })}
       {
-        tasks.length === 0 ? <Text style={{textAlign: 'center'}}>You have no tasks</Text> : null
+        tasks.length === 0 ? <Text style={{textAlign: 'center'}}>You have no tasks</Text> : <List tasks={tasks}/>
       }
       <CustomButton
         placeholder="Add a task"
