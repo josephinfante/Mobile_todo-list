@@ -6,13 +6,16 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
+import { useDispatch } from "react-redux";
 import { CustomButton, CustomContainer, CustomInput } from "../../components";
 import { toast } from "../../components/CustomToast/event/toast.event";
+import { resetLoading, setLoading } from "../../redux/states/loader.state";
 import { CreateTaskHook } from "./hooks/CreateTask.hook";
 
 export interface TaskInterface {}
 
 const Task: React.FC<TaskInterface> = () => {
+  const dispatch = useDispatch();
   const navigation: any = useNavigation();
   const [view, setView] = useState(false);
   const [task, setTask] = useState<{name: string, description: string}>({
@@ -27,12 +30,15 @@ const Task: React.FC<TaskInterface> = () => {
   }, []);
 
   const handleTaskCreation = async () => {
+    dispatch(setLoading({loading: true}));
     let response = await CreateTaskHook(task);
+    if (!response) { dispatch(resetLoading()); return; }
     if (response) {
       if (response.message === 'Task created') {
         toast.success({message: 'Task created', duration: 2000});
         setTimeout(() => {
           navigation.goBack();
+          dispatch(resetLoading());
         }, 2000);
       }
     };
