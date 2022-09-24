@@ -13,6 +13,7 @@ import { TaskCreated } from "../../interfaces";
 import { GetTasksHook } from "./hooks/GetTasks.hook";
 import { Text } from "native-base";
 import { List } from "./components/List";
+import { resetLoading, setLoading } from "../../redux/states/loader.state";
 
 export interface HomeInterface {}
 
@@ -29,18 +30,20 @@ const Home: React.FC<HomeInterface> = () => {
 
   useEffect(() => {
     const userExist = async () => {
+      dispatch(setLoading({ loading: true }));
       let token = await getItem("token");
-      if (token && userState.name === "") {
+      if (!token) {
+        setTasks([]);
+        dispatch(resetLoading());
+        return;
+      }
+      if (userState.name === "") {
         let user = await getUser();
         dispatch(createUser(user));
       }
-      if (token) {
-        let response = await GetTasksHook();
-        setTasks(response);
-      }
-      if (!token) {
-        setTasks([]);
-      }
+      let response = await GetTasksHook();
+      setTasks(response);
+      dispatch(resetLoading());
     };
     if (isFocused) {
       userExist();
@@ -48,9 +51,11 @@ const Home: React.FC<HomeInterface> = () => {
   }, [isFocused]);
   return (
     <CustomContainer>
-      {
-        tasks.length === 0 ? <Text style={{textAlign: 'center'}}>You have no tasks</Text> : <List tasks={tasks}/>
-      }
+      {tasks.length === 0 ? (
+        <Text style={{ textAlign: "center" }}>You have no tasks</Text>
+      ) : (
+        <List tasks={tasks} />
+      )}
       <CustomButton
         placeholder="Add a task"
         onPress={() => navigation.navigate("Task")}
