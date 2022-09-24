@@ -52,6 +52,9 @@ const Home: React.FC<HomeInterface> = () => {
       {tasks.map((task: TaskCreated) => {
         return <Text key={task._id}>{task.name}</Text>;
       })}
+      {
+        tasks.length === 0 ? <Text style={{textAlign: 'center'}}>You have no tasks</Text> : null
+      }
       <CustomButton
         placeholder="Add a task"
         onPress={() => navigation.navigate("Task")}
