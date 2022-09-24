@@ -2,18 +2,21 @@ import { StackActions, useNavigation } from "@react-navigation/native";
 import { View } from "native-base";
 import React, { useEffect, useState } from "react";
 import { Keyboard, StyleSheet, TouchableOpacity } from "react-native";
+import { useDispatch } from "react-redux";
 import {
   CustomButton,
   CustomContainer,
   CustomInput,
 } from "../../../components";
 import { toast } from "../../../components/CustomToast/event/toast.event";
+import { resetLoading, setLoading } from "../../../redux/states/loader.state";
 import { containerStyles } from "../../../styles";
 import { SignUpHook } from "./hooks/SignUp.hook";
 
 export interface SignUpInterface {}
 
 const SignUp: React.FC<SignUpInterface> = () => {
+  const dispatch = useDispatch();
   const navigation: any = useNavigation();
   const [signUp, setSignUp] = useState<{
     name: string;
@@ -34,11 +37,14 @@ const SignUp: React.FC<SignUpInterface> = () => {
   }, []);
 
   const handleSignUp = async () => {
+    dispatch(setLoading({loading: true}));
     let response = await SignUpHook(signUp);
+    if (!response) { dispatch(resetLoading()); return; }
     if (response) {
       toast.success({message: `Welcome, ${signUp.name}!`, duration: 2000})
       setTimeout(() => {
         navigation.dispatch(StackActions.popToTop());
+        dispatch(resetLoading());
       }, 2500);
     }
   };
