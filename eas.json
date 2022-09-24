@@ -1,0 +1,37 @@
+{
+  "cli": {
+    "version": ">= 2.1.0"
+  },
+  "build": {
+    "development": {
+      "developmentClient": true,
+      "distribution": "internal"
+    },
+    "preview": {
+      "channel": "development",
+      "android": {
+        "buildType": "apk"
+      },
+      "env" : {
+        "API_URL": "https://nodejs-api-todo-list.herokuapp.com"
+      }
+    },
+    "preview2": {
+      "android": {
+        "gradleCommand": ":app:assembleRelease"
+      }
+    },
+    "preview3": {
+      "developmentClient": true
+    },
+    "production": {
+      "channel": "production",
+      "env" : {
+        "API_URL": "https://nodejs-api-todo-list.herokuapp.com"
+      }
+    }
+  },
+  "submit": {
+    "production": {}
+  }
+}
