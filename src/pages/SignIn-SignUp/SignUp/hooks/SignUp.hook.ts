@@ -1,16 +1,14 @@
 import { API_URL } from "@env";
 import axios from "axios";
+import { toast } from "../../../../components/CustomToast/event/toast.event";
 import { SignUp } from "../../../../interfaces";
-import { getUser } from "../../../../services";
 import { setItem } from "../../../../utils";
 
 export const SignUpHook = async (signUp: SignUp) => {
-    if (signUp.email === "" || signUp.password === "" || signUp.name === "" || signUp.lastname === "") {
-        return {
-            error: true,
-            message: "Please fill all the fields",
-        };
-    }
+    if (signUp.name === "") { toast.error({message: "Please fill the name field", duration: 3000}); return }
+    if (signUp.lastname === "") { toast.error({message: "Please fill the lastname field", duration: 3000}); return }
+    if (signUp.email === "") { toast.error({message: "Please fill the email field", duration: 3000}); return }
+    if (signUp.password === "") { toast.error({message: "Please fill the password field", duration: 3000}); return }
     try {
         let response = await axios.post(API_URL + "/user", signUp)
         .then((response) => {
@@ -19,11 +17,8 @@ export const SignUpHook = async (signUp: SignUp) => {
                 return true
             }
         })
-        return response === true ? await getUser() : null;
+        return response
     } catch (error: any) {
-        return {
-            error: true,
-            message: error.response.data.message,
-        };
+        if (error.response.data.error) { toast.error({message: error.response.data.error, duration: 3000}); return }
     }
 }
