@@ -6,7 +6,7 @@ import { colors } from "../../styles";
 import { CustomList } from "./components/CustomList";
 import { FontAwesome5 } from "@expo/vector-icons";
 import { getItem } from "../../utils";
-import { getAllTasks, getUser } from "../../services";
+import { getUser } from "../../services";
 import { createUser } from "../../redux/states/user.state";
 import { useDispatch, useSelector } from "react-redux";
 import { AppStore } from "../../redux/store";
@@ -36,7 +36,10 @@ const Home: React.FC<HomeInterface> = () => {
       }
       if (token) {
         let response = await GetTasksHook();
-        setTasks(response)
+        setTasks(response);
+      }
+      if (!token) {
+        setTasks([]);
       }
     };
     if (isFocused) {
@@ -46,11 +49,9 @@ const Home: React.FC<HomeInterface> = () => {
   return (
     <CustomContainer>
       {/* <CustomList tasks={tasks}/> */}
-      {
-        tasks.map((task: TaskCreated) => {
-          return <Text key={task._id}>{task.name}</Text>
-        })
-      }
+      {tasks.map((task: TaskCreated) => {
+        return <Text key={task._id}>{task.name}</Text>;
+      })}
       <CustomButton
         placeholder="Add a task"
         onPress={() => navigation.navigate("Task")}
