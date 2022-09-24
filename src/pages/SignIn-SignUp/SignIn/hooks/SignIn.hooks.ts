@@ -3,14 +3,11 @@ import { Login } from "../../../../interfaces";
 import { API_URL } from "@env"
 import { setItem } from "../../../../utils";
 import { getUser } from "../../../../services";
+import { toast } from "../../../../components/CustomToast/event/toast.event";
 
 export const SignInHook = async (login: Login) => {
-    if (login.email === "" || login.password === "") {
-        return {
-            error: true,
-            message: "Please fill all the fields",
-        };
-    }
+    if (login.email === "") { toast.error({message: "Please fill the email field", duration: 3000}); return }
+    if (login.password === "") { toast.error({message: "Please fill the password field", duration: 3000}); return }
     try {
         let response = await axios.post(API_URL + "/user/login", login)
         .then((response) => {
@@ -21,9 +18,6 @@ export const SignInHook = async (login: Login) => {
         })
         return response === true ? await getUser() : null;
     } catch (error: any) {
-        return {
-            error: true,
-            message: error.response.data.message,
-        };
+        if (error.response.data.error) { toast.error({message: error.response.data.error, duration: 3000}); return }
     }
 }
