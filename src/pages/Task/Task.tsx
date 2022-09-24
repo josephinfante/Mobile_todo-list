@@ -28,12 +28,14 @@ const Task: React.FC<TaskInterface> = () => {
 
   const handleTaskCreation = async () => {
     let response = await CreateTaskHook(task);
-    if (response.message === 'Task created') {
-      toast.success({message: 'Task created', duration: 2000});
-      setTimeout(() => {
-        navigation.goBack();
-      }, 2000);
-    }
+    if (response) {
+      if (response.message === 'Task created') {
+        toast.success({message: 'Task created', duration: 2000});
+        setTimeout(() => {
+          navigation.goBack();
+        }, 2000);
+      }
+    };
   }
   return (
     <TouchableOpacity
