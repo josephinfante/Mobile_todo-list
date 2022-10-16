@@ -69,12 +69,12 @@ export default Profile;
 const styles = StyleSheet.create({
   button: {
     position: "absolute",
-    bottom: 50,
+    bottom: 30,
     right: 20,
   },
   goBack: {
     position: "absolute",
-    bottom: 100,
+    bottom: 80,
     right: 20,
   },
   profilePicture: {
