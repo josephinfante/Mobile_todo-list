@@ -8,6 +8,7 @@ export interface CustomInputInterface {
   onChangeText?: (text: string) => void;
   containerStyles?: {};
   inputStyles?: {};
+  value?: string;
 }
 
 const CustomInput: React.FC<CustomInputInterface> = (
@@ -32,6 +33,7 @@ const CustomInput: React.FC<CustomInputInterface> = (
         placeholder={props.placeholder}
         w="100%"
         onChangeText={props.onChangeText}
+        value={props.value}
       />
     </MotiView>
   );
