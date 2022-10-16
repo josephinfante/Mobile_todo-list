@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { CustomButton, CustomContainer } from "../../components";
-import { StyleSheet, TouchableOpacity } from "react-native";
+import { StyleSheet, TouchableOpacity, View } from "react-native";
 import { useIsFocused, useNavigation } from "@react-navigation/native";
 import { colors } from "../../styles";
 import { FontAwesome5 } from "@expo/vector-icons";
@@ -14,6 +14,7 @@ import { GetTasksHook } from "./hooks/GetTasks.hook";
 import { Text } from "native-base";
 import { List } from "./components/List";
 import { resetLoading, setLoading } from "../../redux/states/loader.state";
+import { toast } from "../../components/CustomToast/event/toast.event";
 
 export interface HomeInterface {}
 
@@ -41,6 +42,7 @@ const Home: React.FC<HomeInterface> = () => {
         let user = await getUser();
         dispatch(createUser(user));
       }
+      toast.success({ message: "Checking for tasks!", duration: 1000 });
       let response = await GetTasksHook();
       setTasks(response);
       dispatch(resetLoading());
@@ -56,19 +58,20 @@ const Home: React.FC<HomeInterface> = () => {
       ) : (
         <List tasks={tasks} />
       )}
-      <CustomButton
-        placeholder="Add a task"
-        onPress={() => navigation.navigate("Task")}
-        containerStyles={styles.containerStyles}
-      />
-      <TouchableOpacity style={styles.userProfile} onPress={userProfile}>
-        <FontAwesome5
-          name={"user"}
-          size={20}
-          color={colors.light}
-          style={{ alignSelf: "center" }}
+      <View style={styles.containerStyles}>
+        <CustomButton
+          placeholder="Add a task"
+          onPress={() => navigation.navigate("Task")}
         />
-      </TouchableOpacity>
+        <TouchableOpacity style={styles.userProfile} onPress={userProfile}>
+          <FontAwesome5
+            name={"user"}
+            size={20}
+            color={colors.light}
+            style={{ alignSelf: "center" }}
+          />
+        </TouchableOpacity>
+      </View>
     </CustomContainer>
   );
 };
@@ -78,18 +81,18 @@ export default Home;
 const styles = StyleSheet.create({
   containerStyles: {
     position: "absolute",
-    bottom: 100,
+    bottom: 30,
     right: 20,
+    display: "flex",
+    flexDirection: "row",
   },
   userProfile: {
-    position: "absolute",
-    bottom: 50,
-    right: 20,
     backgroundColor: colors.purpleLight,
     width: 40,
     height: 40,
     justifyContent: "center",
     alignContent: "center",
     borderRadius: 50,
+    marginLeft: 10,
   },
 });
