@@ -30,6 +30,7 @@ const SignIn: React.FC<SignInInterface> = () => {
   }, []);
 
   const handleSignIn = async () => {
+    Keyboard.dismiss();
     dispatch(setLoading({loading: true}));
     let response = await SignInHook(signIn);
     if (!response) { dispatch(resetLoading()); return; }
@@ -98,7 +99,7 @@ const SignIn: React.FC<SignInInterface> = () => {
           <CustomButton
             placeholder="Back"
             onPress={() => navigation.goBack()}
-            buttonStyles={{ position: "absolute", bottom: 50, right: 20 }}
+            buttonStyles={{ position: "absolute", bottom: 30, right: 20 }}
           />
         </CustomContainer>
       </TouchableOpacity>

@@ -37,6 +37,7 @@ const SignUp: React.FC<SignUpInterface> = () => {
   }, []);
 
   const handleSignUp = async () => {
+    Keyboard.dismiss();
     dispatch(setLoading({loading: true}));
     let response = await SignUpHook(signUp);
     if (!response) { dispatch(resetLoading()); return; }
@@ -61,7 +62,7 @@ const SignUp: React.FC<SignUpInterface> = () => {
               <CustomInput
                 containerStyles={styles.containerStyles}
                 inputStyles={styles.placeholderStyles}
-                placeholder="Name"
+                placeholder="Firstname"
                 delay={120}
                 onChangeText={(text: string) => {
                   setSignUp({
@@ -117,7 +118,7 @@ const SignUp: React.FC<SignUpInterface> = () => {
         <CustomButton
           placeholder="Back"
           onPress={() => navigation.goBack()}
-          buttonStyles={{ position: "absolute", bottom: 50, right: 20 }}
+          buttonStyles={{ position: "absolute", bottom: 30, right: 20 }}
         />
       </CustomContainer>
     </TouchableOpacity>
