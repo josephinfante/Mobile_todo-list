@@ -28,7 +28,7 @@ export default CustomSwitch;
 const styles = StyleSheet.create({
   container: {
     position: "absolute",
-    bottom: 50,
+    bottom: 30,
     left: 20,
   },
 });
